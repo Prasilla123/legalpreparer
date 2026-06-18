@@ -7,17 +7,9 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { SERVICE_INTERESTS } from "@/data/services";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
-
-// Mirrors the live documentspreparer.com consultation form options
-const SERVICE_INTERESTS = [
-  "Deeds",
-  "Will and / or Trust",
-  "Power of Attorney",
-  "Probate information",
-  "Start A Business / LLC",
-];
 
 const TIME_SLOTS = [
   "09:00 AM", "10:00 AM", "11:00 AM", "12:00 PM",
@@ -30,7 +22,7 @@ const initialState = {
   last_name: "",
   email: "",
   phone: "",
-  service: "Deeds",
+  service: "Estate Planning — Wills",
   preferred_date: "",
   preferred_time: "",
   meeting_type: "In-person",

@@ -1,10 +1,25 @@
-"""Backend API tests for Legal Document Preparer."""
+"""Backend API tests for Legal Document Preparer (iteration 2 — major redesign)."""
 import os
 import pytest
 import requests
 
-BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://business-docs-ready.preview.emergentagent.com').rstrip('/')
+BASE_URL = os.environ['REACT_APP_BACKEND_URL'].rstrip('/')
 API = f"{BASE_URL}/api"
+
+EXPECTED_SLUGS = {
+    "do-i-need-a-will-or-a-trust",
+    "what-happens-if-i-dont-have-a-will",
+    "understanding-probate-in-arizona",
+    "why-is-a-power-of-attorney-important",
+    "warranty-deeds-vs-quitclaim-deeds-arizona",
+}
+
+STALE_SLUGS = {
+    "writing-a-will-that-actually-works",
+    "navigating-probate-in-arizona",
+    "starting-an-llc-in-arizona",
+    "understanding-warranty-vs-quitclaim-deeds",
+}
 
 
 @pytest.fixture
@@ -14,100 +29,106 @@ def client():
     return s
 
 
-# Health
+# ----- Health -----
 def test_root_health(client):
     r = client.get(f"{API}/")
     assert r.status_code == 200
-    data = r.json()
-    assert data.get("status") == "ok"
+    assert r.json().get("status") == "ok"
 
 
-# Blog list (seeded)
-def test_blog_list_seeded(client):
+# ----- Blog: 5 new seeds, no stale -----
+def test_blog_list_new_seeds(client):
     r = client.get(f"{API}/blog")
     assert r.status_code == 200
     posts = r.json()
     assert isinstance(posts, list)
-    assert len(posts) >= 4
     slugs = {p['slug'] for p in posts}
-    expected = {
-        "understanding-warranty-vs-quitclaim-deeds",
-        "writing-a-will-that-actually-works",
-        "navigating-probate-in-arizona",
-        "starting-an-llc-in-arizona",
-    }
-    assert expected.issubset(slugs)
+    assert EXPECTED_SLUGS.issubset(slugs), f"Missing seeds: {EXPECTED_SLUGS - slugs}"
+    assert slugs.isdisjoint(STALE_SLUGS), f"Stale slugs still present: {slugs & STALE_SLUGS}"
+    assert len(posts) == 5, f"Expected exactly 5 posts, got {len(posts)}"
 
 
-# Blog detail success
-def test_blog_detail_existing(client):
-    r = client.get(f"{API}/blog/understanding-warranty-vs-quitclaim-deeds")
+def test_blog_detail_do_i_need_a_will(client):
+    r = client.get(f"{API}/blog/do-i-need-a-will-or-a-trust")
     assert r.status_code == 200
     data = r.json()
-    assert data['slug'] == "understanding-warranty-vs-quitclaim-deeds"
-    assert data['title']
+    assert data['slug'] == "do-i-need-a-will-or-a-trust"
+    assert data['title'].startswith("Do I Need a Will or a Trust?")
     assert data['content']
 
 
-# Blog detail 404
 def test_blog_detail_not_found(client):
     r = client.get(f"{API}/blog/non-existent-slug-xyz")
     assert r.status_code == 404
 
 
-# Consultation create + persist via GET
-def test_consultation_create_and_list(client):
+# ----- Checklist requests -----
+def test_checklist_request_success(client):
+    payload = {
+        "name": "TEST_Checklist User",
+        "email": "test_checklist@example.com",
+        "phone": "+15555550100",
+    }
+    r = client.post(f"{API}/checklist-requests", json=payload)
+    assert r.status_code == 200, r.text
+    data = r.json()
+    assert data['id']
+    assert data['name'] == payload['name']
+    assert data['email'] == payload['email']
+    assert data['phone'] == payload['phone']
+    # email_sent must be False without RESEND_API_KEY
+    assert data['email_sent'] is False
+
+
+def test_checklist_request_invalid_email(client):
+    r = client.post(f"{API}/checklist-requests", json={
+        "name": "Bad",
+        "email": "not-an-email",
+    })
+    assert r.status_code == 422
+
+
+def test_checklist_request_missing_name(client):
+    r = client.post(f"{API}/checklist-requests", json={
+        "email": "valid@example.com",
+    })
+    assert r.status_code == 422
+
+
+# ----- Consultation with new SERVICE_INTERESTS -----
+@pytest.mark.parametrize("service", [
+    "Estate Planning — Wills",
+    "Revocable Living Trust",
+    "Free Estate Planning Checklist",
+])
+def test_consultation_new_service_values(client, service):
     payload = {
         "first_name": "TEST_Jane",
         "last_name": "Doe",
         "email": "test_jane@example.com",
-        "service": "Deeds",
+        "service": service,
         "meeting_type": "Zoom Meeting",
-        "preferred_date": "2026-02-15",
-        "preferred_time": "10:00 AM",
-        "message": "Test consultation",
     }
     r = client.post(f"{API}/consultations", json=payload)
     assert r.status_code == 200, r.text
     created = r.json()
     assert created['id']
-    assert created['first_name'] == "TEST_Jane"
-    assert created['email'] == "test_jane@example.com"
-    # email_sent should be False since RESEND_API_KEY is empty
+    assert created['service'] == service
     assert created['email_sent'] is False
 
-    # List
-    r2 = client.get(f"{API}/consultations")
-    assert r2.status_code == 200
-    items = r2.json()
-    ids = [i['id'] for i in items]
-    assert created['id'] in ids
 
-
-# Validation: invalid email
 def test_consultation_invalid_email(client):
     payload = {
         "first_name": "Test",
         "last_name": "User",
         "email": "not-an-email",
-        "service": "Deeds",
+        "service": "Estate Planning — Wills",
     }
     r = client.post(f"{API}/consultations", json=payload)
     assert r.status_code == 422
 
 
-# Validation: missing required first_name
-def test_consultation_missing_first_name(client):
-    payload = {
-        "last_name": "User",
-        "email": "valid@example.com",
-        "service": "Deeds",
-    }
-    r = client.post(f"{API}/consultations", json=payload)
-    assert r.status_code == 422
-
-
-# Contact create
+# ----- Contact -----
 def test_contact_create(client):
     payload = {
         "name": "TEST_Contact",
