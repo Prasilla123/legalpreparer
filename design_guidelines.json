@@ -1,0 +1,133 @@
+{
+  "theme": "light",
+  "archetype": "1 - Organic & Earthy",
+  "design_philosophy": "Senior-friendly, highly accessible, trust-inspiring. Prioritizing high contrast, large typography, clear navigation, and warm professional tones over flashy decorative trends. The design should feel established, authoritative, yet approachable.",
+  "colors": {
+    "background": {
+      "primary": "#FAFAFA",
+      "secondary": "#F3F4F6",
+      "card": "#FFFFFF",
+      "footer": "#0F172A"
+    },
+    "text": {
+      "primary": "#0F172A",
+      "secondary": "#334155",
+      "inverse": "#F8FAFC",
+      "accent": "#92400E"
+    },
+    "brand": {
+      "primary": "#1E3A8A",
+      "primary_hover": "#1E40AF",
+      "accent": "#D97706",
+      "accent_hover": "#B45309"
+    },
+    "border": {
+      "default": "#CBD5E1",
+      "focus": "#1E3A8A"
+    }
+  },
+  "typography": {
+    "font_families": {
+      "heading": "Outfit, sans-serif",
+      "body": "Work Sans, sans-serif"
+    },
+    "scale": {
+      "h1": "text-4xl md:text-5xl font-bold tracking-tight text-[#0F172A]",
+      "h2": "text-3xl md:text-4xl font-semibold tracking-tight text-[#0F172A]",
+      "h3": "text-2xl md:text-3xl font-medium text-[#0F172A]",
+      "h4": "text-xl md:text-2xl font-medium text-[#1E3A8A]",
+      "body_large": "text-lg md:text-xl leading-relaxed text-[#334155]",
+      "body": "text-base md:text-lg leading-relaxed text-[#334155]",
+      "small": "text-sm md:text-base text-[#475569]"
+    },
+    "rules": [
+      "Minimum body font size should act as 18px on desktop, 16px on mobile.",
+      "Line height must be at least 1.6 for body text.",
+      "Paragraphs must be left-aligned, never justified or centered.",
+      "Never use light font weights (e.g., 300). Use regular (400) or higher."
+    ]
+  },
+  "layout_and_spacing": {
+    "container": "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8",
+    "section_padding": "py-16 md:py-24",
+    "gap": "gap-8 md:gap-12",
+    "card_padding": "p-8 md:p-10",
+    "rules": [
+      "Use generous spacing (p-8 to p-12) to reduce cognitive load and prevent misclicks.",
+      "Ensure clickable areas are at least 44x44px.",
+      "Keep layouts single-column on mobile, max 3 columns on desktop.",
+      "Avoid nested horizontal scrolls."
+    ]
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-[#1E3A8A] text-white hover:bg-[#1E40AF] px-8 py-4 rounded-md font-semibold text-lg transition-colors border-2 border-transparent focus:ring-4 focus:ring-[#1E3A8A]/30 focus:outline-none",
+      "secondary": "bg-transparent text-[#1E3A8A] hover:bg-[#F3F4F6] px-8 py-4 rounded-md font-semibold text-lg border-2 border-[#1E3A8A] transition-colors focus:ring-4 focus:ring-[#1E3A8A]/30 focus:outline-none"
+    },
+    "cards": {
+      "service_card": "bg-white border border-[#CBD5E1] rounded-lg p-8 shadow-sm hover:shadow-md transition-shadow flex flex-col h-full",
+      "rules": "No complex glassmorphism or floating soft UI. Borders should be crisp and visible."
+    },
+    "forms": {
+      "input": "w-full border-2 border-[#CBD5E1] rounded-md px-4 py-3 text-lg bg-white focus:border-[#1E3A8A] focus:ring-1 focus:ring-[#1E3A8A] outline-none transition-colors",
+      "label": "block text-lg font-medium text-[#0F172A] mb-2",
+      "rules": "Labels must ALWAYS be positioned above inputs. No placeholder-only labels. High contrast focus states are mandatory."
+    },
+    "navigation": {
+      "header": "bg-white border-b border-[#CBD5E1] sticky top-0 z-50",
+      "links": "text-lg font-medium text-[#334155] hover:text-[#1E3A8A] hover:underline underline-offset-4 transition-colors p-2"
+    }
+  },
+  "pages": {
+    "home": {
+      "hero": {
+        "layout": "Two-column on desktop (text left, image right). High contrast overlay if text is over image, but prefer split layout for seniors.",
+        "tagline": "VISION PLAN ACHIEVE",
+        "sub_tagline": "Let Our Experience Be Your Guide",
+        "cta": "Request a No-Cost Consultation"
+      },
+      "services_section": {
+        "layout": "Grid of 4 cards (1 col mobile, 2 col tablet, 2 or 4 col desktop)."
+      },
+      "about_section": {
+        "layout": "Image of Katrina alongside her bio and credentials (Enrolled Agent, AZCLDP)."
+      }
+    },
+    "consultation_form": {
+      "layout": "Single clear column or 2-column wide layout. Steps clearly labeled if multi-step, but single page with clear sections preferred for seniors."
+    }
+  },
+  "media": {
+    "images": {
+      "hero_background": {
+        "url": "https://images.pexels.com/photos/8441854/pexels-photo-8441854.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "description": "Joyful senior couple reviewing documents, representing peace of mind and planning."
+      },
+      "katrina_headshot": {
+        "url": "https://images.pexels.com/photos/15780889/pexels-photo-15780889.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "description": "Professional middle-aged woman in elegant attire, representing Katrina."
+      },
+      "legal_documents": {
+        "url": "https://images.unsplash.com/photo-1564846824194-346b7871b855?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzF8MHwxfHNlYXJjaHw0fHxsZWdhbCUyMGRvY3VtZW50cyUyMHBlbiUyMGRlc2t8ZW58MHx8fHwxNzgxNzYwMDY4fDA&ixlib=rb-4.1.0&q=85",
+        "description": "Close up of person signing legal form, usable for Services or Contact sections."
+      }
+    },
+    "icons": {
+      "library": "lucide-react",
+      "sizing": "w-8 h-8 md:w-10 md:h-10 text-[#1E3A8A]",
+      "rules": "Icons must be accompanied by text labels. Do not rely solely on icons for navigation or actions."
+    }
+  },
+  "accessibility_testing_attributes": {
+    "rules": "All interactive elements MUST include a data-testid attribute in kebab-case. e.g., data-testid='hero-cta-button', data-testid='consultation-form-submit'."
+  },
+  "instructions_to_main_agent": [
+    "Strictly follow the color palette to maintain high contrast (WCAG AA/AAA).",
+    "Use left alignment for all body copy and paragraphs.",
+    "Do NOT use glassmorphism, floating elements, or hidden hamburger menus on desktop.",
+    "Ensure the consultation form uses the Shadcn Calendar for date selection, ensuring the trigger is large and readable.",
+    "Do not use generic Inter font. Implement Outfit for headings and Work Sans for body text.",
+    "Add hover and focus states to all interactive elements with high contrast shifts.",
+    "Provide clear labels for all form fields."
+  ]
+}
