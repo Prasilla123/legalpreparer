@@ -7,9 +7,17 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { SERVICES } from "@/data/services";
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+
+// Mirrors the live documentspreparer.com consultation form options
+const SERVICE_INTERESTS = [
+  "Deeds",
+  "Will and / or Trust",
+  "Power of Attorney",
+  "Probate information",
+  "Start A Business / LLC",
+];
 
 const TIME_SLOTS = [
   "09:00 AM", "10:00 AM", "11:00 AM", "12:00 PM",
@@ -146,9 +154,9 @@ export default function ConsultationForm({ compact = false }) {
               <SelectValue placeholder="Choose a service" />
             </SelectTrigger>
             <SelectContent>
-              {SERVICES.map((s) => (
-                <SelectItem key={s.slug} value={s.name} className="text-base py-2" data-testid={`service-option-${s.slug}`}>
-                  {s.name}
+              {SERVICE_INTERESTS.map((name) => (
+                <SelectItem key={name} value={name} className="text-base py-2" data-testid={`service-option-${name.replace(/[^a-z0-9]+/gi, '-').toLowerCase()}`}>
+                  {name}
                 </SelectItem>
               ))}
             </SelectContent>

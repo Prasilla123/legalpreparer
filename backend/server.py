@@ -5,6 +5,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
 import asyncio
+import html
 from pathlib import Path
 from pydantic import BaseModel, Field, EmailStr, ConfigDict
 from typing import List, Optional
@@ -156,19 +157,20 @@ async def seed_blog_posts():
 
 # ----------------------- Email Helpers -----------------------
 def _build_consultation_admin_html(c: Consultation) -> str:
+    e = html.escape
     return f"""
     <div style="font-family: Arial, Helvetica, sans-serif; max-width: 640px; margin: auto; padding: 24px; color: #0F172A;">
       <h2 style="color:#1E3A8A;">New Consultation Request</h2>
       <p style="font-size:16px;">A new consultation request has been submitted on Legal Document Preparer.</p>
       <table style="width:100%; border-collapse: collapse; font-size:15px;">
-        <tr><td style="padding:8px; font-weight:bold; width:200px;">Name</td><td style="padding:8px;">{c.first_name} {c.middle_name} {c.last_name}</td></tr>
-        <tr><td style="padding:8px; font-weight:bold;">Email</td><td style="padding:8px;">{c.email}</td></tr>
-        <tr><td style="padding:8px; font-weight:bold;">Phone</td><td style="padding:8px;">{c.phone or '—'}</td></tr>
-        <tr><td style="padding:8px; font-weight:bold;">Service</td><td style="padding:8px;">{c.service}</td></tr>
-        <tr><td style="padding:8px; font-weight:bold;">Preferred Date</td><td style="padding:8px;">{c.preferred_date or '—'}</td></tr>
-        <tr><td style="padding:8px; font-weight:bold;">Preferred Time</td><td style="padding:8px;">{c.preferred_time or '—'}</td></tr>
-        <tr><td style="padding:8px; font-weight:bold;">Meeting Type</td><td style="padding:8px;">{c.meeting_type}</td></tr>
-        <tr><td style="padding:8px; font-weight:bold; vertical-align:top;">Message</td><td style="padding:8px;">{c.message or '—'}</td></tr>
+        <tr><td style="padding:8px; font-weight:bold; width:200px;">Name</td><td style="padding:8px;">{e(c.first_name)} {e(c.middle_name)} {e(c.last_name)}</td></tr>
+        <tr><td style="padding:8px; font-weight:bold;">Email</td><td style="padding:8px;">{e(c.email)}</td></tr>
+        <tr><td style="padding:8px; font-weight:bold;">Phone</td><td style="padding:8px;">{e(c.phone) or '—'}</td></tr>
+        <tr><td style="padding:8px; font-weight:bold;">Service</td><td style="padding:8px;">{e(c.service)}</td></tr>
+        <tr><td style="padding:8px; font-weight:bold;">Preferred Date</td><td style="padding:8px;">{e(c.preferred_date) or '—'}</td></tr>
+        <tr><td style="padding:8px; font-weight:bold;">Preferred Time</td><td style="padding:8px;">{e(c.preferred_time) or '—'}</td></tr>
+        <tr><td style="padding:8px; font-weight:bold;">Meeting Type</td><td style="padding:8px;">{e(c.meeting_type)}</td></tr>
+        <tr><td style="padding:8px; font-weight:bold; vertical-align:top;">Message</td><td style="padding:8px; white-space:pre-wrap;">{e(c.message) or '—'}</td></tr>
       </table>
       <p style="margin-top:24px; font-size:13px; color:#64748B;">Submitted at {c.created_at.isoformat()}</p>
     </div>
@@ -176,10 +178,11 @@ def _build_consultation_admin_html(c: Consultation) -> str:
 
 
 def _build_consultation_user_html(c: Consultation) -> str:
+    e = html.escape
     return f"""
     <div style="font-family: Arial, Helvetica, sans-serif; max-width: 640px; margin: auto; padding: 24px; color: #0F172A;">
-      <h2 style="color:#1E3A8A;">Thank you, {c.first_name}</h2>
-      <p style="font-size:16px; line-height:1.6;">We have received your no-cost consultation request regarding <strong>{c.service}</strong>. Katrina will personally review your details and reach out to confirm your appointment within one business day.</p>
+      <h2 style="color:#1E3A8A;">Thank you, {e(c.first_name)}</h2>
+      <p style="font-size:16px; line-height:1.6;">We have received your no-cost consultation request regarding <strong>{e(c.service)}</strong>. Katrina will personally review your details and reach out to confirm your appointment within one business day.</p>
       <p style="font-size:16px; line-height:1.6;">In the meantime, if you have any urgent questions, please feel free to call <strong>+520-869-7116</strong> or reply to this email.</p>
       <p style="font-size:16px; line-height:1.6; margin-top:24px;">Warmly,<br/>Katrina Jean-Oase<br/><em>Enrolled Agent · AZCLDP</em><br/>Legal Document Preparer, LLC</p>
     </div>
@@ -241,14 +244,15 @@ async def list_consultations():
 @api_router.post("/contact", response_model=ContactMessage)
 async def create_contact_message(payload: ContactMessageCreate):
     msg = ContactMessage(**payload.model_dump())
+    e = html.escape
     admin_html = f"""
     <div style="font-family:Arial,sans-serif;max-width:640px;margin:auto;padding:24px;color:#0F172A;">
       <h2 style="color:#1E3A8A;">New Contact Message</h2>
-      <p><strong>Name:</strong> {msg.name}</p>
-      <p><strong>Email:</strong> {msg.email}</p>
-      <p><strong>Subject:</strong> {msg.subject}</p>
+      <p><strong>Name:</strong> {e(msg.name)}</p>
+      <p><strong>Email:</strong> {e(msg.email)}</p>
+      <p><strong>Subject:</strong> {e(msg.subject)}</p>
       <p><strong>Message:</strong></p>
-      <p style="white-space:pre-wrap;">{msg.message}</p>
+      <p style="white-space:pre-wrap;">{e(msg.message)}</p>
     </div>
     """
     msg.email_sent = await _send_email_safe(

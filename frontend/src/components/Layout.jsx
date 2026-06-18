@@ -124,10 +124,10 @@ export default function Layout({ children }) {
               and confidentiality. Let our experience be your guide.
             </p>
             <div className="mt-6 flex gap-3">
-              <a href="https://www.linkedin.com" target="_blank" rel="noreferrer" className="w-11 h-11 grid place-items-center rounded-md bg-[#1E3A8A] hover:bg-[#1E40AF]" data-testid="footer-linkedin" aria-label="LinkedIn">
+              <a href="https://www.linkedin.com/in/katrina-oase/" target="_blank" rel="noreferrer" className="w-11 h-11 grid place-items-center rounded-md bg-[#1E3A8A] hover:bg-[#1E40AF]" data-testid="footer-linkedin" aria-label="LinkedIn">
                 <Linkedin className="w-5 h-5" />
               </a>
-              <a href="https://www.facebook.com" target="_blank" rel="noreferrer" className="w-11 h-11 grid place-items-center rounded-md bg-[#1E3A8A] hover:bg-[#1E40AF]" data-testid="footer-facebook" aria-label="Facebook">
+              <a href="https://www.facebook.com/executivetoastmasterstucson/" target="_blank" rel="noreferrer" className="w-11 h-11 grid place-items-center rounded-md bg-[#1E3A8A] hover:bg-[#1E40AF]" data-testid="footer-facebook" aria-label="Facebook">
                 <Facebook className="w-5 h-5" />
               </a>
             </div>

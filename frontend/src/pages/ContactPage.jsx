@@ -52,8 +52,8 @@ export default function ContactPage() {
           <div className="mt-8">
             <div className="text-sm font-semibold uppercase tracking-widest text-[#92400E]">Follow</div>
             <div className="mt-3 flex gap-3">
-              <a href="https://www.linkedin.com" target="_blank" rel="noreferrer" className="w-12 h-12 rounded-md bg-[#1E3A8A] text-white grid place-items-center hover:bg-[#1E40AF]" aria-label="LinkedIn" data-testid="contact-linkedin"><Linkedin className="w-5 h-5" /></a>
-              <a href="https://www.facebook.com" target="_blank" rel="noreferrer" className="w-12 h-12 rounded-md bg-[#1E3A8A] text-white grid place-items-center hover:bg-[#1E40AF]" aria-label="Facebook" data-testid="contact-facebook"><Facebook className="w-5 h-5" /></a>
+              <a href="https://www.linkedin.com/in/katrina-oase/" target="_blank" rel="noreferrer" className="w-12 h-12 rounded-md bg-[#1E3A8A] text-white grid place-items-center hover:bg-[#1E40AF]" aria-label="LinkedIn" data-testid="contact-linkedin"><Linkedin className="w-5 h-5" /></a>
+              <a href="https://www.facebook.com/executivetoastmasterstucson/" target="_blank" rel="noreferrer" className="w-12 h-12 rounded-md bg-[#1E3A8A] text-white grid place-items-center hover:bg-[#1E40AF]" aria-label="Facebook" data-testid="contact-facebook"><Facebook className="w-5 h-5" /></a>
             </div>
           </div>
 
